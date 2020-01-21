@@ -6,7 +6,10 @@ const QUESTIONS_URL = `${BASE_URL}/questions`
 
 // Elemant variables to append to
 const main = document.querySelector('main')
+const userMenu = document.querySelector('.userMenu')
+const li = document.createElement('li')
 
+// initial fetch request to populate users
 document.addEventListener("DOMContentLoaded", () => {
     fetch(USERS_URL)
     .then(resp => resp.json())
@@ -14,7 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const usersArray = users['data']
         console.log(usersArray)
         for(const user of usersArray){
-            console.log(user['attributes'])
+            li.innerHTML = `<a href="#">${user['attributes']['name']}</a>`
+            userMenu.appendChild(li)
         }
     })
 })
+
+function openForm() {
+    document.getElementById("myForm").style.display = "block";
+  }
+  
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
