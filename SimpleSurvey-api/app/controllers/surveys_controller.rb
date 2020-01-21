@@ -11,8 +11,14 @@ class SurveysController < ApplicationController
     
     def create
         user = User.find_by(id: params[:user_id])
-        Survey = user.surveys.create(name: params[:name])
+        survey = user.surveys.create(name: params[:name])
         render json: SurveySerializer.new(survey)
+    end
+
+    def update
+        survey = survey.find_by(id: params[:id])
+        survey.update(params)
+        render json: QuestionSerializer.new(survey)
     end
 
     def destroy

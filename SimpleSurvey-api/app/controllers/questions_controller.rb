@@ -17,6 +17,7 @@ class QuestionsController < ApplicationController
 
     def update
         question = Question.find_by(id: params[:id])
+        question.update(params)
         render json: QuestionSerializer.new(question)
     end
 
