@@ -10,5 +10,11 @@ const main = document.querySelector('main')
 document.addEventListener("DOMContentLoaded", () => {
     fetch(USERS_URL)
     .then(resp => resp.json())
-    .then(users => {    })
+    .then(users => {
+        const usersArray = users['data']
+        console.log(usersArray)
+        for(const user of usersArray){
+            console.log(user['attributes'])
+        }
+    })
 })
