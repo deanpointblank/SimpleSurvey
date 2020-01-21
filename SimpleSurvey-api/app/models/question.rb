@@ -1,3 +1,3 @@
 class Question < ApplicationRecord
-  belongs_to :servey
+  belongs_to :survey
 end
