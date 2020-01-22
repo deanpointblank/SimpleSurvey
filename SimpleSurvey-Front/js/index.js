@@ -62,7 +62,7 @@ function addQuestionField() {
         <button type="button" class="btn btn-secondary" onclick="addMultipleChoiceValues(${questions.children.length})"> Multiple Choice </button>
         <button type="button" class="btn btn-secondary" onclick="addTrueFalseValues(${questions.children.length})"> True or False </button>
         <button type="button" class="btn btn-secondary" onclick="addTextValue(${questions.children.length})"> Open Ended </button>
-        <button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
+        <br /><button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
     </div>
     `
     // <label for="psw"><b>description</b></label>
@@ -71,36 +71,49 @@ function addQuestionField() {
     console.log('clicked!')
 }
 
+function questionElementReplace(questionElement, replacedElement){
+    elementArray = questionElement.innerHTML.split('\n')
+    elementArray.splice(3, 4, replacedElement)
+    questionElement.innerHTML = elementArray.join('\n')
+}
+
 function removeQuestionField(childnumber){
     questions.children[childnumber].remove()
 }
 
 function addMultipleChoiceValues(childnumber){
-    console.log(questions.children[childnumber])
+    const multipleChoiceValues = `
+    <label for="questionType"> Values </label><br>
+    <input type="text" class="form-control"></input><br>
+    <input type="text" class="form-control"></input><br>
+    <input type="text" class="form-control"></input><br>
+    <input type="text" class="form-control"></input><br>
+    `
+    questionElementReplace(questions.children[childnumber], multipleChoiceValues)
 }
 function addTrueFalseValues(childnumber){
-    console.log(questions.children[childnumber])
+    const trueFalseValues = `
+    <label for="questionType"> Answers </label><br>
+    <input type="text" class="form-control"></input><br>
+    <input type="text" class="form-control"></input><br>
+    `
+    questionElementReplace(questions.children[childnumber], trueFalseValues)
 }
 function addTextValue(childnumber){
-    console.log(questions.children[childnumber])
+    questionElementReplace(questions.children[childnumber])
 }
 
-// miscelaneous 
-// function openForm() {
-//     document.getElementById("myForm").style.display = "block";
-// }
+// Submit Question
 
-// function closeForm() {
-//     document.getElementById("myForm").style.display = "none";
-// }
+document.querySelector('.submit-question').addEventListener(
+    'click', (e) => {
+        e.preventDefault()
+        const rawFormData = document.querySelector('.form-popup')
 
-// function on() {
-//     document.getElementById("overlay").style.display = "block";
-// }
+        fetch(SURVEY_URL)
+    }
+)
 
-// function off() {
-//     document.getElementById("overlay").style.display = "none";
-// }
 
 /* Set the width of the sidebar */
 function nav() {
