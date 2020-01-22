@@ -8,17 +8,36 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
 
+
     <title>Document</title>
 </head>
 
 <body>
     <nav>
+
+    </nav>
+    <!-- nav bar -->
+    <nav id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <ul class="userMenu">
         </ul>
     </nav>
 
+    <!-- Full Page Image Header with Vertically Centered Content -->
+    <header class="masthead">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-1">Simple Survey</h1>
+                    <p class="lead">Create, take, and save surveys</p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <main>
+    <!-- actual content -->
+    <main id="main">
+        <button class="openbtn" onclick="openNav()">&#9776; Users</button>
         <!--All of the forms for this project-->
 
         <!--User 'Log in' Form-->
@@ -74,7 +93,7 @@
                         <p>Modal body text goes here.</p>
                     </div>
                     <div class="modal-footer">
-                        
+
                         <button type="button" class="btn btn-primary">Save changes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
