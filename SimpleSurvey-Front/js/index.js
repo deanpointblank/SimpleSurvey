@@ -7,9 +7,12 @@ const QUESTIONS_URL = `${BASE_URL}/questions`
 // Elemant variables to append to
 const main = document.querySelector('main')
 const userMenu = document.querySelector('.userMenu')
-const li = document.createElement('li')
 const mosaic = document.querySelector('.card-columns')
+
+// Create elements
+const li = document.createElement('li')
 const card = document.createElement('div')
+
 
 // initial fetch request to populate users
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,6 +49,13 @@ function addSurveys(){
             `
         }
     })
+}
+
+// add/delete question fields to form
+function addQuestionField(){
+    // <label for="psw"><b>description</b></label>
+    // <input type="password" placeholder="Enter Password" name="psw" required>
+    // <br />
 }
 
 
