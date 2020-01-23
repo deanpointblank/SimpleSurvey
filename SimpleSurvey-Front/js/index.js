@@ -71,36 +71,32 @@ function addQuestionField() {
     console.log('clicked!')
 }
 
-function questionElementReplace(questionElement, replacedElement){
+function questionElementReplace(questionElement, replacedElement, questionType) {
+    questionElement.classList += ` question ${questionType}`
     elementArray = questionElement.innerHTML.split('\n')
     elementArray.splice(3, 4, replacedElement)
     questionElement.innerHTML = elementArray.join('\n')
 }
 
-function removeQuestionField(childnumber){
+function removeQuestionField(childnumber) {
     questions.children[childnumber].remove()
 }
 
-function addMultipleChoiceValues(childnumber){
+function addMultipleChoiceValues(childnumber) {
     const multipleChoiceValues = `
     <label for="questionType"> Values </label><br>
-    <input type="text" class="form-control"></input><br>
-    <input type="text" class="form-control"></input><br>
-    <input type="text" class="form-control"></input><br>
-    <input type="text" class="form-control"></input><br>
+    <input type="text" class="form-control multiChoice"></input><br>
+    <input type="text" class="form-control multiChoice"></input><br>
+    <input type="text" class="form-control multiChoice"></input><br>
+    <input type="text" class="form-control multiChoice"></input><br>
     `
-    questionElementReplace(questions.children[childnumber], multipleChoiceValues)
+    questionElementReplace(questions.children[childnumber], multipleChoiceValues, 'Multiple-Choice')
 }
-function addTrueFalseValues(childnumber){
-    const trueFalseValues = `
-    <label for="questionType"> Answers </label><br>
-    <input type="text" class="form-control"></input><br>
-    <input type="text" class="form-control"></input><br>
-    `
-    questionElementReplace(questions.children[childnumber], trueFalseValues)
+function addTrueFalseValues(childnumber) {
+    questionElementReplace(questions.children[childnumber], null, 'True-False')
 }
-function addTextValue(childnumber){
-    questionElementReplace(questions.children[childnumber])
+function addTextValue(childnumber) {
+    questionElementReplace(questions.children[childnumber], null, 'Open-Ended')
 }
 
 // Submit Question
@@ -109,8 +105,21 @@ document.querySelector('.submit-question').addEventListener(
     'click', (e) => {
         e.preventDefault()
         const rawFormData = document.querySelector('.form-popup')
-
-        fetch(SURVEY_URL)
+        const questionsArray = rawFormData.querySelectorAll('.question')
+        questionsArray.forEach(question => {
+            let questionType = question.classList['value'].split(' ')[2]
+            let questionvalues
+            // question.querySelectorAll('.multiChoice')
+            if (questionType === "Multiple-Choice") {
+                questionvalues = question.querySelectorAll('.multiChoice')
+                questionvalues.forEach((q)=>{
+                    console.log(q.value)
+                })
+            }
+            console.log(question)
+        });
+        console.log(rawFormData)
+        // fetch(SURVEY_URL)
     }
 )
 
