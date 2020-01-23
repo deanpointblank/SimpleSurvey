@@ -1,8 +1,4 @@
-// URL variables for 'fetch'
-const BASE_URL = 'http://localhost:3000'
-//---> move to remove const USERS_URL = `${BASE_URL}/users`
-const SURVEY_URL = `${BASE_URL}/surveys`
-const QUESTIONS_URL = `${BASE_URL}/questions`
+
 
 // Elemant variables to append to
 const main = document.querySelector('main')
@@ -14,24 +10,8 @@ const questions = document.querySelector('.questions')
 const li = document.createElement('li')
 const div = document.createElement('div')
 
-
-// initial fetch request to populate users
-// document.addEventListener("DOMContentLoaded", () => {
-//     fetch(USERS_URL)
-//         .then(resp => resp.json())
-//         .then(users => {
-//             const usersArray = users['data']
-//             console.log(usersArray)
-//             for (const user of usersArray) {
-//                 li.innerHTML = `<a href="#">${user['attributes']['name']}</a>`
-//                 userMenu.appendChild(li)
-//             }
-//         });
-//     addSurveys();
-// })
-
 // fetch to populate survey mosaic
-function addSurveys() {
+document.addEventListener('DOMContentLoaded', () => {
     fetch(SURVEY_URL)
         .then(resp => resp.json())
         .then(surveys => {
@@ -50,7 +30,7 @@ function addSurveys() {
             `
             }
         })
-}
+})
 
 // add/delete question fields to form
 function addQuestionField() {
@@ -110,6 +90,7 @@ document.querySelector('.submit-question').addEventListener(
         questionsArray.forEach(question => {
             let questionType = question.classList['value'].split(' ')[2]
             // question.querySelectorAll('.multiChoice')
+            debugger
             if (questionType === "Multiple-Choice") {
                 questionvalues = question.querySelectorAll('.multiChoice')
                 questionvalues.forEach((q)=>{
