@@ -1,6 +1,6 @@
 // URL variables for 'fetch'
 const BASE_URL = 'http://localhost:3000'
-const USERS_URL = `${BASE_URL}/users`
+//---> move to remove const USERS_URL = `${BASE_URL}/users`
 const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
 
@@ -16,19 +16,19 @@ const div = document.createElement('div')
 
 
 // initial fetch request to populate users
-document.addEventListener("DOMContentLoaded", () => {
-    fetch(USERS_URL)
-        .then(resp => resp.json())
-        .then(users => {
-            const usersArray = users['data']
-            console.log(usersArray)
-            for (const user of usersArray) {
-                li.innerHTML = `<a href="#">${user['attributes']['name']}</a>`
-                userMenu.appendChild(li)
-            }
-        });
-    addSurveys();
-})
+// document.addEventListener("DOMContentLoaded", () => {
+//     fetch(USERS_URL)
+//         .then(resp => resp.json())
+//         .then(users => {
+//             const usersArray = users['data']
+//             console.log(usersArray)
+//             for (const user of usersArray) {
+//                 li.innerHTML = `<a href="#">${user['attributes']['name']}</a>`
+//                 userMenu.appendChild(li)
+//             }
+//         });
+//     addSurveys();
+// })
 
 // fetch to populate survey mosaic
 function addSurveys() {
@@ -106,9 +106,9 @@ document.querySelector('.submit-question').addEventListener(
         e.preventDefault()
         const rawFormData = document.querySelector('.form-popup')
         const questionsArray = rawFormData.querySelectorAll('.question')
+        let questionvalues
         questionsArray.forEach(question => {
             let questionType = question.classList['value'].split(' ')[2]
-            let questionvalues
             // question.querySelectorAll('.multiChoice')
             if (questionType === "Multiple-Choice") {
                 questionvalues = question.querySelectorAll('.multiChoice')
@@ -125,12 +125,12 @@ document.querySelector('.submit-question').addEventListener(
 
 
 /* Set the width of the sidebar */
-function nav() {
-    if (document.getElementById("mySidebar").style.width === "250px") {
-        document.getElementById("mySidebar").style.width = "0";
-        document.getElementById("main").style.marginLeft = "0";
-    } else {
-        document.getElementById("mySidebar").style.width = "250px";
-        document.getElementById("main").style.marginLeft = "250px";
-    }
-}
+// function nav() {
+//     if (document.getElementById("mySidebar").style.width === "250px") {
+//         document.getElementById("mySidebar").style.width = "0";
+//         document.getElementById("main").style.marginLeft = "0";
+//     } else {
+//         document.getElementById("mySidebar").style.width = "250px";
+//         document.getElementById("main").style.marginLeft = "250px";
+//     }
+// }
