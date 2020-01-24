@@ -7,8 +7,8 @@ const QUESTIONS_URL = `${BASE_URL}/questions`
 class Survey{
     constructor(name, questionsArray){
         this.name = name
-        debugger
         this.questionsArray = questionsArray
+        console.log(this)
     }
 
     questionFormatter(questionsArray){
