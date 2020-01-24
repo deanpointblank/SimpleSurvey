@@ -10,8 +10,7 @@ class QuestionsController < ApplicationController
     end
     
     def create
-        survey = Surver.find_by(id: params[:survey_id])
-        question = survey.questions.create(name: params[:name])
+        question = Questions.create(name: params[:name], answer: params[:answers], survey_id: params[:survey_id])
         render json: QuestionSerializer.new(question)
     end
 

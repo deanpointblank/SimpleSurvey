@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h5 class="card-title">${survey['attributes']['name']}</h5>
                     <p class="card-text survey_description">${survey['attributes']['description']}</p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <button type="button" class="btn btn-success" onclick=""> Take Survey </button>
+                    <button type="button" class="btn btn-info" onclick=""> See Results </button>
+                    <br /><br />
+                    <button type="button" class="btn btn-primary" onclick=""> Delete Survey </button>
+
                 </div>
             </div>
             `
