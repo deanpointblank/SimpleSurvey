@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(resp => resp.json())
         .then(surveys => {
             const surveysArray = surveys['data']
-            console.log(surveysArray)
             for (const survey of surveysArray) {
                 mosaic.innerHTML += `
             <div class="card">
@@ -37,7 +36,7 @@ function addQuestionField() {
     questions.innerHTML += `
     <div class="form-group" id="${questions.children.length}"><br />
         <label for="question">Question Name</label>
-        <input type="text" class="form-control"></input>
+        <input type="text" class="form-control questionName"></input>
         <label for="questionType">Question Type</label><br>
         <button type="button" class="btn btn-secondary" onclick="addMultipleChoiceValues(${questions.children.length})"> Multiple Choice </button>
         <button type="button" class="btn btn-secondary" onclick="addTrueFalseValues(${questions.children.length})"> True or False </button>
@@ -86,21 +85,23 @@ document.querySelector('.submit-question').addEventListener(
         e.preventDefault()
         const rawFormData = document.querySelector('.form-popup')
         const questionsArray = rawFormData.querySelectorAll('.question')
-        let questionvalues
+        let surveyTitle = document.querySelector('#SurveyName').value.toString()
+        let allQuestions = []
         questionsArray.forEach(question => {
+            let questionvalues = []
             let questionType = question.classList['value'].split(' ')[2]
-            // question.querySelectorAll('.multiChoice')
-            debugger
-            if (questionType === "Multiple-Choice") {
-                questionvalues = question.querySelectorAll('.multiChoice')
-                questionvalues.forEach((q)=>{
-                    console.log(q.value)
+            let questionTitle = question.querySelector('.questionName').value
+            if(questionType === "Multiple-Choice"){
+                questionvalue = question.querySelectorAll('.multiChoice')
+                questionvalue.forEach((q)=>{
+                    questionvalues.push(q)
                 })
             }
-            console.log(question)
+            allQuestions.push({name: questionTitle, type: questionType, values: questionvalues})
         });
-        console.log(rawFormData)
-        // fetch(SURVEY_URL)
+        const survey = new Survey(surveyTitle, allQuestions)
+        // Survey.send
+        console.log(survey)
     }
 )
 

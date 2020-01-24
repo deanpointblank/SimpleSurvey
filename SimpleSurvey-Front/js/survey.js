@@ -5,12 +5,15 @@ const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
 
 class Survey{
-    constructor(name){
+    constructor(name, questionsArray){
         this.name = name
+        debugger
+        this.questionsArray = questionsArray
     }
 
     questionFormatter(questionsArray){
         //takes in questions
+        // question title, question type, question values
         //formats in Json format depending on question type
         //adds to this.questions
     }
