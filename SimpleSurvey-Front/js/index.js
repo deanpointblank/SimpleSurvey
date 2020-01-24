@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h5 class="card-title">${survey['attributes']['name']}</h5>
                     <p class="card-text survey_description">${survey['attributes']['description']}</p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    <button type="button" class="btn btn-success" onclick=""> Take Survey </button>
-                    <button type="button" class="btn btn-info" onclick=""> See Results </button>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#takeSurvey" onclick="Survey.populate(${survey.id})"> Take Survey </button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#surveyResults" onclick="Survey.results(${survey.id})"> See Results </button>
                     <br /><br />
                     <button type="button" class="btn btn-primary" onclick="Survey.deleteSurvey(${survey.id})"> Delete Survey </button>
 

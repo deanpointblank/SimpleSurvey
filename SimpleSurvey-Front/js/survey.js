@@ -3,6 +3,8 @@ const BASE_URL = 'http://localhost:3000'
 //---> move to remove const USERS_URL = `${BASE_URL}/users`
 const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
+const surveyModal = document.getElementById('takeSurvey')
+const resultsModal = document.getElementById('surveyResults')
 
 class Survey {
     constructor(name, questionsArray, description) {
@@ -78,4 +80,90 @@ class Survey {
             document.getElementById(`${id}`).remove()
         }
     }
+    static populate(id){
+        fetch(`${SURVEY_URL}/${id}`)
+            .then(resp => resp.json())
+            .then((survey) => {
+                console.log(survey)
+            })
+        
+        
+        
+        
+        /* <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form class="form-popup" id="myForm">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Survey Name</label>
+                                    <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea">Description</label>
+                                    <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
+                                </div>
+                                <div class="questions">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
+                                    <button type="submit" class="btn btn-primary submit-question">Submit</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> */
+    }
+
+    static results(id){
+        fetch()
+
+    /*  <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form class="form-popup" id="myForm">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Survey Name</label>
+                                    <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea">Description</label>
+                                    <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
+                                </div>
+                                <div class="questions">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
+                                    <button type="submit" class="btn btn-primary submit-question">Submit</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> */
+
+    }
+
 }

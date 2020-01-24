@@ -28,8 +28,9 @@
     <!-- actual content -->
     <main id="main">
         <!-- Survey Creation form -->
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        
+        <!-- Create survey Modal -->
+        <div class="modal fade" id="createSurvey" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -67,11 +68,21 @@
             </div>
         </div>
 
+        <!-- Take survey Modal -->
+        <div class="modal fade" id="takeSurvey" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+        </div>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="openbtn" data-toggle="modal" data-target="#exampleModalLong">Create Survey</button>
+        <!-- Survey Results survey Modal -->
+        <div class="modal fade" id="surveyResults" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+        </div>
+
+        <!-- Button trigger Create modal -->
+        <button type="button" class="openbtn" data-toggle="modal" data-target="#createSurvey">Create Survey</button>
         <br />
 
+        <!-- Expand Survey --Work in progress-->         
 
         <!-- Available Surveys -->
 
@@ -83,6 +94,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="js/survey.js"></script>
     <script src="js/index.js"></script>
+    <script src="js/openSurvey.js"></script>
 </body>
 
 </html>
