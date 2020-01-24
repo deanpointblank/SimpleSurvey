@@ -7,8 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-user = User.create(name: "Houston")
-survey = user.surveys.create(name: "Where are you from?")
+survey = Survey.create(name: "Where are you from?", description: "Test Survey about nothing")
 survey.questions.create(name: "What is your country?")
 survey.questions.create(name: "Do you like it?")
 survey.questions.create(name: "Would you move?")
