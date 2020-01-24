@@ -61,4 +61,21 @@ class Survey {
         })
         this.questionFormatter(this.questionsArray)
     }
+
+    static deleteSurvey(id){
+        if (confirm('Deleting this survey will also delete all results and questions. Are you sure?')){
+            fetch(`${SURVEY_URL}/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+            })
+            .catch((error) =>{
+                alert('Something went wrong cheif! Check to log for more details');
+                console.log(error.message)
+            })
+            document.getElementById(`${id}`).remove()
+        }
+    }
 }

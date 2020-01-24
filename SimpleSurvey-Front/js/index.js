@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const surveysArray = surveys['data']
             for (const survey of surveysArray) {
                 mosaic.innerHTML += `
-            <div class="card">
+            <div class="card" id="${survey.id}">
                 <div class="card-body">
                     <h5 class="card-title">${survey['attributes']['name']}</h5>
                     <p class="card-text survey_description">${survey['attributes']['description']}</p>
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button type="button" class="btn btn-success" onclick=""> Take Survey </button>
                     <button type="button" class="btn btn-info" onclick=""> See Results </button>
                     <br /><br />
-                    <button type="button" class="btn btn-primary" onclick=""> Delete Survey </button>
+                    <button type="button" class="btn btn-primary" onclick="Survey.deleteSurvey(${survey.id})"> Delete Survey </button>
 
                 </div>
             </div>
