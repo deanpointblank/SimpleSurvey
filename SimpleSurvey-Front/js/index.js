@@ -51,10 +51,12 @@ function addQuestionField() {
 }
 
 function questionElementReplace(questionElement, replacedElement, questionType) {
+    let keepValue = questionElement.querySelector('.questionName').value
     questionElement.classList += ` question ${questionType}`
     elementArray = questionElement.innerHTML.split('\n')
     elementArray.splice(3, 4, replacedElement)
     questionElement.innerHTML = elementArray.join('\n')
+    questionElement.querySelector('.questionName').value = keepValue
 }
 
 function removeQuestionField(childnumber) {
@@ -69,13 +71,13 @@ function addMultipleChoiceValues(childnumber) {
     <input type="text" class="form-control multiChoice"></input><br>
     <input type="text" class="form-control multiChoice"></input><br>
     `
-    questionElementReplace(questions.children[childnumber], multipleChoiceValues, 'Multiple-Choice')
+    questionElementReplace(questions.children[childnumber], multipleChoiceValues, 'multiple_choice')
 }
 function addTrueFalseValues(childnumber) {
-    questionElementReplace(questions.children[childnumber], null, 'True-False')
+    questionElementReplace(questions.children[childnumber], null, 'true_false')
 }
 function addTextValue(childnumber) {
-    questionElementReplace(questions.children[childnumber], null, 'Open-Ended')
+    questionElementReplace(questions.children[childnumber], null, 'open_ended')
 }
 
 // Submit Question
@@ -91,7 +93,7 @@ document.querySelector('.submit-question').addEventListener(
             let questionvalues = []
             let questionType = question.classList['value'].split(' ')[2]
             let questionTitle = question.querySelector('.questionName').value
-            if(questionType === "Multiple-Choice"){
+            if(questionType === "multiple_choice"){
                 questionvalue = question.querySelectorAll('.multiChoice')
                 questionvalue.forEach((q)=>{
                     questionvalues.push(q)
