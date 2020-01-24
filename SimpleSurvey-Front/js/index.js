@@ -88,7 +88,7 @@ document.querySelector('.submit-question').addEventListener(
         const questionsArray = rawFormData.querySelectorAll('.question')
         let surveyTitle = document.querySelector('#SurveyName').value.toString()
         let allQuestions = []
-        let surveyDescription = document.querySelector('.description')
+        let surveyDescription = document.querySelector('.description').value.toString()
         questionsArray.forEach(question => {
             let questionvalues = []
             let questionType = question.classList['value'].split(' ')[2]
@@ -102,7 +102,7 @@ document.querySelector('.submit-question').addEventListener(
             allQuestions.push({name: questionTitle, type: questionType, values: questionvalues})
         });
         const survey = new Survey(surveyTitle, allQuestions, surveyDescription)
-        // Survey.send
+        survey.sendRequest()
         console.log(survey)
     }
 )

@@ -4,21 +4,21 @@ const BASE_URL = 'http://localhost:3000'
 const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
 
-class Survey{
-    constructor(name, questionsArray){
+class Survey {
+    constructor(name, questionsArray, description) {
         this.name = name
+        this.description = description
         this.questionsArray = questionsArray
-        console.log(this)
     }
 
-    questionFormatter(questionsArray){
+    questionFormatter(questionsArray) {
         //takes in questions
         // question title, question type, question values
         //formats in Json format depending on question type
         //adds to this.questions
     }
 
-    static sendRequest(){
+    sendRequest() {
         fetch(SURVEY_URL, {
             method: "POST",
             headers: {
@@ -26,8 +26,17 @@ class Survey{
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                trainer_id: trainerId
+                name: this.name,
+                description: this.description
             })
         })
+            .then(resp => resp.json())
+            .then((surveyInfo) => {
+                this.id = surveyInfo.data.id
+            })
+            .catch((error) => {
+                alert('Whoops! we have an error on our hands check the log for more details');
+                console.log(error.message)
+            })
     }
 }

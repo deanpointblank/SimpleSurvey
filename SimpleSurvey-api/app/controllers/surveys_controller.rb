@@ -10,7 +10,7 @@ class SurveysController < ApplicationController
     end
     
     def create
-        Survey.create(name: params[:name])
+        survey = Survey.create(name: params[:name], description: params[:description])
         render json: SurveySerializer.new(survey)
     end
 
