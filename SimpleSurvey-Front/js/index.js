@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">${survey['attributes']['name']}</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
+                    <p class="card-text survey_description">${survey['attributes']['description']}</p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                 </div>
             </div>
@@ -89,6 +88,7 @@ document.querySelector('.submit-question').addEventListener(
         const questionsArray = rawFormData.querySelectorAll('.question')
         let surveyTitle = document.querySelector('#SurveyName').value.toString()
         let allQuestions = []
+        let surveyDescription = document.querySelector('.description')
         questionsArray.forEach(question => {
             let questionvalues = []
             let questionType = question.classList['value'].split(' ')[2]
@@ -101,7 +101,7 @@ document.querySelector('.submit-question').addEventListener(
             }
             allQuestions.push({name: questionTitle, type: questionType, values: questionvalues})
         });
-        const survey = new Survey(surveyTitle, allQuestions)
+        const survey = new Survey(surveyTitle, allQuestions, surveyDescription)
         // Survey.send
         console.log(survey)
     }

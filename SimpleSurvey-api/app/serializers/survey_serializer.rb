@@ -1,4 +1,4 @@
 class SurveySerializer
   include FastJsonapi::ObjectSerializer
-  attributes :name, :results, :questions
+  attributes :name, :description, :results, :questions
 end
