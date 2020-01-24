@@ -12,10 +12,31 @@ class Survey {
     }
 
     questionFormatter(questionsArray) {
-        //takes in questions
-        // question title, question type, question values
-        //formats in Json format depending on question type
-        //adds to this.questions
+        for(const question of questionsArray){
+            // name: string, answer: string, survey_id: integer, type: string
+            fetch(QUESTIONS_URL, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    name: question.name,
+                    answer: question.values,
+                    survey_id: this.id,
+                    question_type: question.type
+
+                })
+            })
+            .then(resp => resp.json())
+            .then((questionInfo) => {
+                console.log(questionInfo)
+            })
+            .catch((error) => {
+                alert('Something is wrong with one of your question request! Check the log for more Details');
+                console.log(error.message)
+            })
+        }
     }
 
     sendRequest() {
@@ -30,13 +51,14 @@ class Survey {
                 description: this.description
             })
         })
-            .then(resp => resp.json())
-            .then((surveyInfo) => {
-                this.id = surveyInfo.data.id
-            })
-            .catch((error) => {
-                alert('Whoops! we have an error on our hands check the log for more details');
-                console.log(error.message)
-            })
+        .then(resp => resp.json())
+        .then((surveyInfo) => {
+            this.id = surveyInfo.data.id
+        })
+        .catch((error) => {
+            alert('Whoops! we have an error on our hands check the log for more details');
+            console.log(error.message)
+        })
+        this.questionFormatter(this.questionsArray)
     }
 }
