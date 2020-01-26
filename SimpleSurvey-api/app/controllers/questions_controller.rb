@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
 
         params['surveyQuestions'].shift
         params['surveyQuestions'].each do |question|
-            survey.questions.create(name: params[:name], answer: params[:values], question_type: params[:type])
+            survey.questions.create(name: question[:name], answer: question[:values], question_type: question[:type])
         end
 
         render json: QuestionSerializer.new(questions)
@@ -31,4 +31,9 @@ class QuestionsController < ApplicationController
         question = Question.find_by(id: params[:id])
         question.destroy
     end
+
+    private
+
+
 end
+
