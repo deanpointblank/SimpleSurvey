@@ -10,8 +10,15 @@ class QuestionsController < ApplicationController
     end
     
     def create
-        question = Question.create(name: params[:name], answer: params[:answers], survey_id: params[:survey_id], question_type: params[:question_type])
-        render json: QuestionSerializer.new(question)
+        questions = Question.all
+        survey = Survey.find_by(id: params['surveyQuestions'][0]['survey_id'])
+
+        params['surveyQuestions'].shift
+        params['surveyQuestions'].each do |question|
+            survey.questions.create(name: params[:name], answer: params[:values], question_type: params[:type])
+        end
+
+        render json: QuestionSerializer.new(questions)
     end
 
     def update

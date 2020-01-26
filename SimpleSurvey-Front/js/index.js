@@ -101,7 +101,7 @@ document.querySelector('.submit-question').addEventListener(
             if(questionType === "multiple_choice"){
                 questionvalue = question.querySelectorAll('.multiChoice')
                 questionvalue.forEach((q)=>{
-                    questionvalues.push(q)
+                    questionvalues.push(q.value)
                 })
             }
             allQuestions.push({name: questionTitle, type: questionType, values: questionvalues})
@@ -113,13 +113,7 @@ document.querySelector('.submit-question').addEventListener(
 )
 
 
-/* Set the width of the sidebar */
-// function nav() {
-//     if (document.getElementById("mySidebar").style.width === "250px") {
-//         document.getElementById("mySidebar").style.width = "0";
-//         document.getElementById("main").style.marginLeft = "0";
-//     } else {
-//         document.getElementById("mySidebar").style.width = "250px";
-//         document.getElementById("main").style.marginLeft = "250px";
-//     }
-// }
+// Close the stupid modal  <------
+function closeModal(){
+    debugger
+}

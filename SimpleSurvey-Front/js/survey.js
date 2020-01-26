@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:3000'
 //---> move to remove const USERS_URL = `${BASE_URL}/users`
 const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
-const surveyModal = document.getElementById('takeSurvey')
+const surveyModal = document.getElementById('takeSurvey').querySelector('.modal-content')
 const resultsModal = document.getElementById('surveyResults')
 
 class Survey {
@@ -13,32 +13,30 @@ class Survey {
         this.questionsArray = questionsArray
     }
 
-    questionFormatter(questionsArray) {
+    questionFormatter(questionsArray, surveyId) {
+        let formattedQuestions = [{survey_id: surveyId}]
         for(const question of questionsArray){
+            formattedQuestions.push({name: question.name, type: question.type, values: question.values})
             // name: string, answer: string, survey_id: integer, type: string
-            fetch(QUESTIONS_URL, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({
-                    name: question.name,
-                    answer: question.values,
-                    survey_id: this.id,
-                    question_type: question.type
-
-                })
-            })
-            .then(resp => resp.json())
-            .then((questionInfo) => {
-                console.log(questionInfo)
-            })
-            .catch((error) => {
-                alert('Something is wrong with one of your question request! Check the log for more Details');
-                console.log(error.message)
-            })
         }
+        fetch(QUESTIONS_URL, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                surveyQuestions: formattedQuestions
+            })
+        })
+        .then(resp => resp.json())
+        .then((questionsInfo) => {
+            console.log(questionsInfo)
+        })
+        .catch((error) => {
+            alert('Something is wrong with one of your question request! Check the log for more Details');
+            console.log(error.message)
+        })
     }
 
     sendRequest() {
@@ -55,13 +53,13 @@ class Survey {
         })
         .then(resp => resp.json())
         .then((surveyInfo) => {
-            this.id = surveyInfo.data.id
+            console.log(surveyInfo)
+            this.questionFormatter(this.questionsArray, surveyInfo.data.id)
         })
         .catch((error) => {
             alert('Whoops! we have an error on our hands check the log for more details');
             console.log(error.message)
         })
-        this.questionFormatter(this.questionsArray)
     }
 
     static deleteSurvey(id){
@@ -84,85 +82,76 @@ class Survey {
         fetch(`${SURVEY_URL}/${id}`)
             .then(resp => resp.json())
             .then((survey) => {
+
+                surveyModal.innerHTML = `
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">${survey.data.attributes.name}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form class="form-popup" id="myForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Survey Name</label>
+                                        <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleTextarea">Description</label>
+                                        <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
+                                    </div>
+                                    <div class="questions">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
+                                        <button type="submit" class="btn btn-primary submit-question">Submit</button>
+                                    </div>
+                                    
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                `
                 console.log(survey)
             })
-        
-        
-        
-        
-        /* <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form class="form-popup" id="myForm">
-                            <fieldset>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Survey Name</label>
-                                    <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleTextarea">Description</label>
-                                    <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
-                                </div>
-                                <div class="questions">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
-                                    <button type="submit" class="btn btn-primary submit-question">Submit</button>
-                                </div>
-
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> */
     }
 
     static results(id){
         fetch()
 
-    /*  <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form class="form-popup" id="myForm">
-                            <fieldset>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Survey Name</label>
-                                    <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleTextarea">Description</label>
-                                    <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
-                                </div>
-                                <div class="questions">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
-                                    <button type="submit" class="btn btn-primary submit-question">Submit</button>
-                                </div>
-
-                            </fieldset>
-                        </form>
+            /* <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-            </div>
-        </div> */
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form class="form-popup" id="myForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Survey Name</label>
+                                        <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleTextarea">Description</label>
+                                        <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
+                                    </div>
+                                    <div class="questions">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
+                                        <button type="submit" class="btn btn-primary submit-question">Submit</button>
+                                    </div>
+                                    
+                                </fieldset>
+                            </form>
+                        </div>
+            </div> */
 
     }
 
