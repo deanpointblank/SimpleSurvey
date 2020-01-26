@@ -140,17 +140,20 @@ class Survey {
         }
     }
 
-    static multipleChoice(questions){
+    static multipleChoice(question){
         const questionModal = document.getElementById('questions')
-        debugger
-        for (const question of questions){
-            questionModal.innerHTML += `
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                <label class="form-check-label" for="exampleRadios1">
-                ${question.name}
-                </label>
-            </div>
+        let multi = `
+        <div class="form-group">
+            <label for="exampleFormControlSelect2">${question.name}</label>
+            <select multiple class="form-control" id="question_${question.id}">
+            </select>
+        </div>
+      `
+      questionModal.innerHTML += multi
+
+        for (const value of JSON.parse(question.answer)){
+            document.getElementById(`question_${question.id}`).innerHTML += `
+            <option>${value}</option>
             `
         }
     }
