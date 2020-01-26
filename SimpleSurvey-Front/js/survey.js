@@ -10,7 +10,6 @@ const resultsModal = document.getElementById('surveyResults')
 const modalFooter = `
     <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
     <button type="submit" class="btn btn-primary submit-question">Submit</button>
     </div>
     `
@@ -175,20 +174,23 @@ class Survey {
         <div class="form-group">
             <label>${question.name}</label>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="True" checked>
+                <input class="form-check-input" type="radio" name="exampleRadios" value="True" checked>
                 <label class="form-check-label" for="exampleRadios1">
                 True
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="False" checked>
+                <input class="form-check-input" type="radio" name="exampleRadios" value="False" checked>
                 <label class="form-check-label" for="exampleRadios1">
                 False
                 </label>
             </div>
         </div>
         `
+    }
 
+    static submitSurvey(){
+        
     }
 
     static results(id){
