@@ -6,6 +6,15 @@ const QUESTIONS_URL = `${BASE_URL}/questions`
 const surveyModal = document.getElementById('takeSurvey').querySelector('.modal-content')
 const resultsModal = document.getElementById('surveyResults')
 
+//--> html sections
+const modalFooter = `
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
+    <button type="submit" class="btn btn-primary submit-question">Submit</button>
+    </div>
+    `
+//---> Survey class
 class Survey {
     constructor(name, questionsArray, description) {
         this.name = name
@@ -82,7 +91,7 @@ class Survey {
         fetch(`${SURVEY_URL}/${id}`)
             .then(resp => resp.json())
             .then((survey) => {
-
+                console.log(survey)
                 surveyModal.innerHTML = `
                 <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">${survey.data.attributes.name}</h5>
@@ -102,21 +111,81 @@ class Survey {
                                         <label for="exampleTextarea">Description</label>
                                         <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
                                     </div>
-                                    <div class="questions">
+                                    <div id="questions">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
-                                        <button type="submit" class="btn btn-primary submit-question">Submit</button>
-                                    </div>
+                                    ${modalFooter}
                                     
                                 </fieldset>
                             </form>
                         </div>
                     </div>
                 `
+                Survey.questiondisplay(survey.data.attributes.questions)
                 console.log(survey)
             })
+    }
+
+    static questiondisplay(questions){
+        for (const question of questions){
+            switch(question.question_type){
+                case "open_ended":
+                    Survey.openEnded(question)
+                    break
+                case "multiple_choice":
+                    Survey.multipleChoice(question)
+                    break
+                case "true_false":
+                    Survey.trueFalse(question)
+            }
+        }
+    }
+
+    static multipleChoice(questions){
+        const questionModal = document.getElementById('questions')
+        debugger
+        for (const question of questions){
+            questionModal.innerHTML += `
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                ${question.name}
+                </label>
+            </div>
+            `
+        }
+    }
+
+    static openEnded(question){
+        const questionModal = document.getElementById('questions')
+        questionModal.innerHTML += `
+            <div class="form-group">
+                <label for="${question.name}">${question.name}</label>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+            </div>
+            `
+
+    }
+
+    static trueFalse(question){
+        const questionModal = document.getElementById('questions')
+        questionModal.innerHTML += `
+        <div class="form-group">
+            <label>${question.name}</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="True" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                True
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="False" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                False
+                </label>
+            </div>
+        </div>
+        `
+
     }
 
     static results(id){
@@ -142,11 +211,7 @@ class Survey {
                                     </div>
                                     <div class="questions">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-info addQuestion" onclick="addQuestionField()">Add Question</button>
-                                        <button type="submit" class="btn btn-primary submit-question">Submit</button>
-                                    </div>
+                                    ${modalFooter}
                                     
                                 </fieldset>
                             </form>
