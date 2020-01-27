@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:3000'
 const SURVEY_URL = `${BASE_URL}/surveys`
 const QUESTIONS_URL = `${BASE_URL}/questions`
 const surveyModal = document.getElementById('takeSurvey').querySelector('.modal-content')
-const resultsModal = document.getElementById('surveyResults')
+const resultsModal = document.getElementById('surveyResults').querySelector('.modal-content')
 
 //--> html sections
 const modalFooter = (id) => {
@@ -218,6 +218,7 @@ class Survey {
             }
 
         }
+        const parsedResults = JSON.stringify(formattedResults)
         //Submit Results
         fetch(`${SURVEY_URL}/${id}`, {
             method: "PATCH",
@@ -227,7 +228,7 @@ class Survey {
             },
             body: JSON.stringify({
                 id: id,
-                results: formattedResults
+                results: parsedResults
             })
         })
         .then(resp => resp.json())
@@ -239,35 +240,51 @@ class Survey {
     }
 
     static results(id){
-        fetch()
-
-            /* <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Create Survey</h5>
+        fetch(`${SURVEY_URL}/${id}`)
+            .then(resp => resp.json())
+            .then((survey) => {
+                console.log(survey)
+                resultsModal.innerHTML = `
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">${survey.data.attributes.name}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <form class="form-popup" id="myForm">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Survey Name</label>
-                                        <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleTextarea">Description</label>
-                                        <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
-                                    </div>
-                                    <div class="questions">
-                                    </div>
-                                    ${modalFooter}
-                                    
-                                </fieldset>
-                            </form>
+                            <canvas id="results"></canvas>
                         </div>
-            </div> */
+                    </div>
+                `
 
+                //let test = JSON.parse(survey.data.attributes.results)
+                debugger
+                let chart = document.getElementById('results').getContext('2d')
+                let pieChart = new Chart(chart, {
+                    type: 'doughnut',
+                    data: {
+                        labels:['Boston', 'Worcester', 'Whatever', 'blah'],
+                        datasets:[{
+                            label: 'population',
+                            data: [617594, 181045, 153060, 106519],
+                            backgroundColor: ['red', 'orange', 'pink', 'black'],
+                            hoverBorderWidth: 5,
+                            hoverBorderColor: 'red'
+                        }],
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'test chart',
+                            fontSize: 25
+                        },
+                        legend:{
+                            position: 'bottom'
+                        }
+                    }
+                })
+            })
     }
 
 }
