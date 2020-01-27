@@ -7,12 +7,15 @@ const surveyModal = document.getElementById('takeSurvey').querySelector('.modal-
 const resultsModal = document.getElementById('surveyResults')
 
 //--> html sections
-const modalFooter = `
-    <div class="modal-footer">
+const modalFooter = (id) => {
+    return `
+    <div class="modal-footer" id="${id}">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary submit-question">Submit</button>
+    <button type="submit" class="btn btn-primary submit-results" data-dismiss="modal">Submit</button>
     </div>
     `
+
+}
 //---> Survey class
 class Survey {
     constructor(name, questionsArray, description) {
@@ -100,19 +103,11 @@ class Survey {
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <form class="form-popup" id="myForm">
+                            <form class="form-popup" id="surveyForm">
                                 <fieldset>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Survey Name</label>
-                                        <input type="text" class="form-control" id="SurveyName" placeholder="Enter Survey Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleTextarea">Description</label>
-                                        <textarea class="form-control description" id="exampleTextarea" rows="3"></textarea>
-                                    </div>
                                     <div id="questions">
                                     </div>
-                                    ${modalFooter}
+                                    ${modalFooter(survey.data.id)}
                                     
                                 </fieldset>
                             </form>
@@ -120,6 +115,12 @@ class Survey {
                     </div>
                 `
                 Survey.questiondisplay(survey.data.attributes.questions)
+                document.querySelector('.submit-results').addEventListener(
+                    'click', (e) => {
+                        e.preventDefault()
+                        Survey.submitSurvey(document.getElementById('surveyForm'))
+                    }
+                )
                 console.log(survey)
             })
     }
@@ -142,7 +143,7 @@ class Survey {
     static multipleChoice(question){
         const questionModal = document.getElementById('questions')
         let multi = `
-        <div class="form-group">
+        <div class="form-group multiple_choice">
             <label for="exampleFormControlSelect2">${question.name}</label>
             <select multiple class="form-control" id="question_${question.id}">
             </select>
@@ -160,7 +161,7 @@ class Survey {
     static openEnded(question){
         const questionModal = document.getElementById('questions')
         questionModal.innerHTML += `
-            <div class="form-group">
+            <div class="form-group open_ended">
                 <label for="${question.name}">${question.name}</label>
                 <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
             </div>
@@ -171,7 +172,7 @@ class Survey {
     static trueFalse(question){
         const questionModal = document.getElementById('questions')
         questionModal.innerHTML += `
-        <div class="form-group">
+        <div class="form-group true_false">
             <label>${question.name}</label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="exampleRadios" value="True" checked>
@@ -189,8 +190,52 @@ class Survey {
         `
     }
 
-    static submitSurvey(){
-        
+    static submitSurvey(form){
+        // Format survevy for PATCH request
+        const id = form.querySelector('.modal-footer').id
+        const allQuestions = form.querySelectorAll('.form-group')
+        const formattedResults = []
+        for (const question of allQuestions){
+            const questionName = question.querySelector('label').innerText
+            let questionValue
+            switch (question.className.split(" ")[1]){                
+                case "open_ended":
+                    questionValue = question.querySelector('input').value
+                    formattedResults.push({[questionName]: questionValue})
+                    break
+                case "true_false":
+                    for (const value of question.querySelectorAll('.form-check-input')){
+                        if (value.checked){
+                            questionValue = value.value
+                        }
+                    }
+                    formattedResults.push({[questionName]: questionValue})
+                    break
+                case "multiple_choice":
+                    questionValue = question.querySelector('.form-control').value
+                    formattedResults.push({[questionName]: questionValue})
+                    break
+            }
+
+        }
+        //Submit Results
+        fetch(`${SURVEY_URL}/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept":"application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                results: formattedResults
+            })
+        })
+        .then(resp => resp.json())
+        .then((info) => console.log(info))
+        .catch((error)=>{
+            alert('Something went wrong updating the results. Check log for details')
+            console.log(error.message)
+        })
     }
 
     static results(id){

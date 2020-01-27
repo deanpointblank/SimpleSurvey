@@ -15,9 +15,13 @@ class SurveysController < ApplicationController
     end
 
     def update
-        survey = survey.find_by(id: params[:id])
-        survey.update(params)
-        render json: QuestionSerializer.new(survey)
+        survey = Survey.find_by(id: params[:id])
+        new_input = []
+        params[:results].each do |questionAnswer|
+            new_input.push(questionAnswer.to_s)
+        end
+        results = survey.results + ', ' + new_input.to_s
+        render json: SurveySerializer.new(survey)
     end
 
     def destroy

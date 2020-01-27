@@ -112,8 +112,4 @@ document.querySelector('.submit-question').addEventListener(
     }
 )
 
-
-// Close the stupid modal  <------
-function closeModal(){
-    debugger
-}
+// Submit Results
