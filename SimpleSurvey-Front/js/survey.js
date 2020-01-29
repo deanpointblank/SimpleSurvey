@@ -16,6 +16,8 @@ const modalFooter = (id) => {
     `
 
 }
+
+const charts = document.getElementById('charts')
 //---> Survey class
 class Survey {
     constructor(name, questionsArray, description) {
@@ -140,7 +142,7 @@ class Survey {
     static multipleChoice(question){
         const questionModal = document.getElementById('questions')
         let multi = `
-        <div class="form-group multiple_choice">
+        <div class="form-group multiple_choice" id=${question.id}>
             <label for="exampleFormControlSelect2">${question.name}</label>
             <select multiple class="form-control" id="question_${question.id}">
             </select>
@@ -158,9 +160,9 @@ class Survey {
     static trueFalse(question){
         const questionModal = document.getElementById('questions')
         questionModal.innerHTML += `
-        <div class="form-group true_false">
+        <div class="form-group true_false" id="${question.id}">
             <label>${question.name}</label>
-            <div class="form-check">
+            <div class="form-check" id="question_${question.id}">
                 <input class="form-check-input" type="radio" name="${question.name}" value="True">
                 <label class="form-check-label" for="${question.name}">
                 True
@@ -178,14 +180,13 @@ class Survey {
 
     static submitSurvey(form){
         // Format survevy for PATCH request
-        debugger
         const id = form.querySelector('.modal-footer').id
         const allQuestions = form.querySelectorAll('.form-group')
         const formattedResults = []
         for (const question of allQuestions){
-            const questionName = question.querySelector('label').innerText
+            const questionName = question.getAttribute('id')
             let questionValue
-            switch (question.className.split(" ")[1]){                
+            switch (question.className.split(" ")[1]){             
                 case "true_false":
                     for (const value of question.querySelectorAll('.form-check-input')){
                         if (value.checked){
@@ -203,8 +204,7 @@ class Survey {
         }
         const parsedResults = JSON.stringify(formattedResults)
         //Submit Results
-
-        fetch(`${SURVEY_URL}/${id}`, {
+        fetch(`${QUESTIONS_URL}/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -236,82 +236,125 @@ class Survey {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="container-fluid">
-                            <canvas id="results"></canvas>
+                        <div class="container-fluid" id="charts">
                         </div>
                     </div>
                 `
 
                 //let test = JSON.parse(survey.data.attributes.results)
                 Survey.parseResults(survey.data)
-                let chart = document.getElementById('results').getContext('2d')
-                let pieChart = new Chart(chart, {
-                    type: 'doughnut',
-                    data: {
-                        labels:['Boston', 'Worcester', 'Whatever', 'blah'],
-                        datasets:[{
-                            label: 'population',
-                            data: [617594, 181045, 153060, 106519],
-                            backgroundColor: ['red', 'orange', 'pink', 'black'],
-                            hoverBorderWidth: 5,
-                            hoverBorderColor: 'red'
-                        }],
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'test chart',
-                            fontSize: 25
-                        },
-                        legend:{
-                            position: 'bottom'
-                        }
-                    }
-                })
+                // let chart = document.getElementById('results').getContext('2d')
+                // let pieChart = new Chart(chart, {
+                //     type: 'doughnut',
+                //     data: {
+                //         labels:['Boston', 'Worcester', 'Whatever', 'blah'],
+                //         datasets:[{
+                //             label: 'population',
+                //             data: [617594, 181045, 153060, 106519],
+                //             backgroundColor: ['red', 'orange', 'pink', 'black'],
+                //             hoverBorderWidth: 5,
+                //             hoverBorderColor: 'red'
+                //         }],
+                //     },
+                //     options: {
+                //         title: {
+                //             display: true,
+                //             text: 'test chart',
+                //             fontSize: 25
+                //         },
+                //         legend:{
+                //             position: 'bottom'
+                //         }
+                //     }
+                // })
             })
     }
 
     static parseResults(data){
-        let resultArray = data.attributes.results.split('],')
-        let parsedResultArray = []
-        ///
-        let chartLabels = []
-        let values = []
-        let keyValues = []
-
-        for(const r of resultArray){
-            parsedResultArray.push(r.replace(/[\[\]]/g, ''))
-        }
-        for(const keyValues of parsedResultArray[0].split(',')){
-            let kv = JSON.parse(keyValues)
-            chartLabels.push(Object.keys(kv)[0])
-        }
-
-        // loop to parse array as a matrix into key value pairs
-        for (const i in parsedResultArray[0].split(',')){
-
-            if (parsedResultArray[i] !== undefined){
-                for(const ii in parsedResultArray[i].split(',')){
-
-                    if (JSON.parse(parsedResultArray[ii] !== undefined)){
-                        // logic to seperate key values into [key:array] with multiple values
-                        // keys
-                        let jsonResult = JSON.parse(parsedResultArray[ii].split(',')[i])
-                        // if (!values.includes(Object.keys(jsonResult)[0])){
-                            values.push(jsonResult)
-                        //}
-                        // values
-                        // if (!Object.isObject(values[i])){
-                        //     values[i] = ({value[i] = []})
-                        // }
-                        //values[i].push(Object.values(jsonResult)[0])
-                    }
-
+        let questionData = data.attributes.questions
+        for(const question of questionData){
+            const kv = {}
+            for (let ii of question.results.split(',')){
+                ii = ii.trim()
+                if(!!kv[ii]){
+                    kv[ii] += 1
+                } else {
+                    kv[ii] = 1
                 }
             }
+            
+            const chart = document.createElement('canvas')
+            chart.setAttribute("id", `${question.id}`)
+            chart.getContext('2d')
+            document.getElementById('charts').appendChild(chart)
+
+            let pieChart = new Chart(chart, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(kv),
+                    datasets:[{
+                        label: question.name ,
+                        data: Object.values(kv),
+                        backgroundColor: ['red', 'orange', 'pink', 'black'],
+                        hoverBorderWidth: 5,
+                        hoverBorderColor: 'red'
+                    }],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: question.name,
+                        fontSize: 25
+                    },
+                    legend:{
+                        position: 'bottom'
+                    }
+                }
+            })
+            //debugger
+
+
+
         }
-        debugger
-        console.log(values)
+        // let parsedResultArray = []
+        // ///
+        // let chartLabels = []
+        // let values = []
+        // let keyValues = []
+
+        // for(const r of resultArray){
+        //     parsedResultArray.push(r.replace(/[\[\]]/g, ''))
+        // }
+        // for(const keyValues of parsedResultArray[0].split(',')){
+        //     let kv = JSON.parse(keyValues)
+        //     chartLabels.push(Object.keys(kv)[0])
+        // }
+
+        // // loop to parse array as a matrix into key value pairs
+        // for (const i in parsedResultArray[0].split(',')){
+
+        //     if (parsedResultArray[i] !== undefined){
+        //         for(const ii in parsedResultArray[i].split(',')){
+
+        //             if (JSON.parse(parsedResultArray[ii] !== undefined)){
+        //                 // logic to seperate key values into [key:array] with multiple values
+        //                 // keys
+        //                 let jsonResult = JSON.parse(parsedResultArray[ii].split(',')[i])
+        //                 // if (!values.includes(Object.keys(jsonResult)[0])){
+        //                     values.push(jsonResult)
+        //                 //}
+        //                 // values
+        //                 // if (!Object.isObject(values[i])){
+        //                 //     values[i] = ({value[i] = []})
+        //                 // }
+        //                 //values[i].push(Object.values(jsonResult)[0])
+        //             }
+
+        //         }
+        //     }
+        // }
+        // debugger
+        // console.log(values)
 
 
     }

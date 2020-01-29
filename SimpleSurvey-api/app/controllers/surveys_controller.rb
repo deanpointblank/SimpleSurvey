@@ -16,6 +16,7 @@ class SurveysController < ApplicationController
 
     def update
         survey = Survey.find_by(id: params[:id])
+        binding.pry
         if !!survey.results
             results = "#{survey.results},  #{params[:results]}"
         else
