@@ -44,7 +44,6 @@ function addQuestionField() {
         <label for="questionType">Question Type</label><br>
         <button type="button" class="btn btn-secondary" onclick="addMultipleChoiceValues(${questions.children.length})"> Multiple Choice </button>
         <button type="button" class="btn btn-secondary" onclick="addTrueFalseValues(${questions.children.length})"> True or False </button>
-        <button type="button" class="btn btn-secondary" onclick="addTextValue(${questions.children.length})"> Open Ended </button>
         <br /><button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
     </div>
     `
@@ -79,9 +78,6 @@ function addMultipleChoiceValues(childnumber) {
 }
 function addTrueFalseValues(childnumber) {
     questionElementReplace(questions.children[childnumber], null, 'true_false')
-}
-function addTextValue(childnumber) {
-    questionElementReplace(questions.children[childnumber], null, 'open_ended')
 }
 
 // Submit Question
