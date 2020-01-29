@@ -259,7 +259,7 @@ class Survey {
                 `
 
                 //let test = JSON.parse(survey.data.attributes.results)
-                debugger
+                Survey.parseResults(survey.data)
                 let chart = document.getElementById('results').getContext('2d')
                 let pieChart = new Chart(chart, {
                     type: 'doughnut',
@@ -285,6 +285,51 @@ class Survey {
                     }
                 })
             })
+    }
+
+    static parseResults(data){
+        let resultArray = data.attributes.results.split('],')
+        let parsedResultArray = []
+        ///
+        let chartLabels = []
+        let values = []
+        let keyValues = []
+
+        for(const r of resultArray){
+            parsedResultArray.push(r.replace(/[\[\]]/g, ''))
+        }
+        for(const keyValues of parsedResultArray[0].split(',')){
+            let kv = JSON.parse(keyValues)
+            chartLabels.push(Object.keys(kv)[0])
+        }
+
+        // loop to parse array as a matrix into key value pairs
+        for (const i in parsedResultArray[0].split(',')){
+
+            if (parsedResultArray[i] !== undefined){
+                for(const ii in parsedResultArray[i].split(',')){
+
+                    if (JSON.parse(parsedResultArray[ii] !== undefined)){
+                        // logic to seperate key values into [key:array] with multiple values
+                        // keys
+                        let jsonResult = JSON.parse(parsedResultArray[ii].split(',')[i])
+                        // if (!values.includes(Object.keys(jsonResult)[0])){
+                            values.push(jsonResult)
+                        //}
+                        // values
+                        // if (!Object.isObject(values[i])){
+                        //     values[i] = ({value[i] = []})
+                        // }
+                        //values[i].push(Object.values(jsonResult)[0])
+                    }
+
+                }
+            }
+        }
+        debugger
+        console.log(values)
+
+
     }
 
 }
