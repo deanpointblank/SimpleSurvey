@@ -44,7 +44,8 @@ function addQuestionField() {
         <label for="questionType">Question Type</label><br>
         <button type="button" class="btn btn-secondary" onclick="addMultipleChoiceValues(${questions.children.length})"> Multiple Choice </button>
         <button type="button" class="btn btn-secondary" onclick="addTrueFalseValues(${questions.children.length})"> True or False </button>
-        <br /><button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
+        <br />
+        <button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
     </div>
     `
     // <label for="psw"><b>description</b></label>

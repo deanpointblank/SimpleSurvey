@@ -128,9 +128,6 @@ class Survey {
     static questiondisplay(questions){
         for (const question of questions){
             switch(question.question_type){
-                case "open_ended":
-                    Survey.openEnded(question)
-                    break
                 case "multiple_choice":
                     Survey.multipleChoice(question)
                     break
@@ -158,31 +155,20 @@ class Survey {
         }
     }
 
-    static openEnded(question){
-        const questionModal = document.getElementById('questions')
-        questionModal.innerHTML += `
-            <div class="form-group open_ended">
-                <label for="${question.name}">${question.name}</label>
-                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
-            </div>
-            `
-
-    }
-
     static trueFalse(question){
         const questionModal = document.getElementById('questions')
         questionModal.innerHTML += `
         <div class="form-group true_false">
             <label>${question.name}</label>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" value="True" checked>
-                <label class="form-check-label" for="exampleRadios1">
+                <input class="form-check-input" type="radio" name="${question.name}" value="True">
+                <label class="form-check-label" for="${question.name}">
                 True
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" value="False" checked>
-                <label class="form-check-label" for="exampleRadios1">
+                <input class="form-check-input" type="radio" name="${question.name}" value="False">
+                <label class="form-check-label" for="${question.name}">
                 False
                 </label>
             </div>
@@ -192,6 +178,7 @@ class Survey {
 
     static submitSurvey(form){
         // Format survevy for PATCH request
+        debugger
         const id = form.querySelector('.modal-footer').id
         const allQuestions = form.querySelectorAll('.form-group')
         const formattedResults = []
@@ -199,10 +186,6 @@ class Survey {
             const questionName = question.querySelector('label').innerText
             let questionValue
             switch (question.className.split(" ")[1]){                
-                case "open_ended":
-                    questionValue = question.querySelector('input').value
-                    formattedResults.push({[questionName]: questionValue})
-                    break
                 case "true_false":
                     for (const value of question.querySelectorAll('.form-check-input')){
                         if (value.checked){
@@ -220,6 +203,7 @@ class Survey {
         }
         const parsedResults = JSON.stringify(formattedResults)
         //Submit Results
+
         fetch(`${SURVEY_URL}/${id}`, {
             method: "PATCH",
             headers: {
