@@ -18,6 +18,7 @@ const modalFooter = (id) => {
 }
 
 const charts = document.getElementById('charts')
+
 //---> Survey class
 class Survey {
     constructor(name, questionsArray, description) {
@@ -68,6 +69,7 @@ class Survey {
         .then((surveyInfo) => {
             console.log(surveyInfo)
             this.questionFormatter(this.questionsArray, surveyInfo.data.id)
+            getCards()
         })
         .catch((error) => {
             alert('Whoops! we have an error on our hands check the log for more details');
@@ -221,6 +223,7 @@ class Survey {
             alert('Something went wrong updating the results. Check log for details')
             console.log(error.message)
         })
+      
     }
 
     static results(id){
@@ -241,32 +244,7 @@ class Survey {
                     </div>
                 `
 
-                //let test = JSON.parse(survey.data.attributes.results)
                 Survey.parseResults(survey.data)
-                // let chart = document.getElementById('results').getContext('2d')
-                // let pieChart = new Chart(chart, {
-                //     type: 'doughnut',
-                //     data: {
-                //         labels:['Boston', 'Worcester', 'Whatever', 'blah'],
-                //         datasets:[{
-                //             label: 'population',
-                //             data: [617594, 181045, 153060, 106519],
-                //             backgroundColor: ['red', 'orange', 'pink', 'black'],
-                //             hoverBorderWidth: 5,
-                //             hoverBorderColor: 'red'
-                //         }],
-                //     },
-                //     options: {
-                //         title: {
-                //             display: true,
-                //             text: 'test chart',
-                //             fontSize: 25
-                //         },
-                //         legend:{
-                //             position: 'bottom'
-                //         }
-                //     }
-                // })
             })
     }
 
@@ -311,50 +289,10 @@ class Survey {
                     }
                 }
             })
-            //debugger
 
 
 
         }
-        // let parsedResultArray = []
-        // ///
-        // let chartLabels = []
-        // let values = []
-        // let keyValues = []
-
-        // for(const r of resultArray){
-        //     parsedResultArray.push(r.replace(/[\[\]]/g, ''))
-        // }
-        // for(const keyValues of parsedResultArray[0].split(',')){
-        //     let kv = JSON.parse(keyValues)
-        //     chartLabels.push(Object.keys(kv)[0])
-        // }
-
-        // // loop to parse array as a matrix into key value pairs
-        // for (const i in parsedResultArray[0].split(',')){
-
-        //     if (parsedResultArray[i] !== undefined){
-        //         for(const ii in parsedResultArray[i].split(',')){
-
-        //             if (JSON.parse(parsedResultArray[ii] !== undefined)){
-        //                 // logic to seperate key values into [key:array] with multiple values
-        //                 // keys
-        //                 let jsonResult = JSON.parse(parsedResultArray[ii].split(',')[i])
-        //                 // if (!values.includes(Object.keys(jsonResult)[0])){
-        //                     values.push(jsonResult)
-        //                 //}
-        //                 // values
-        //                 // if (!Object.isObject(values[i])){
-        //                 //     values[i] = ({value[i] = []})
-        //                 // }
-        //                 //values[i].push(Object.values(jsonResult)[0])
-        //             }
-
-        //         }
-        //     }
-        // }
-        // debugger
-        // console.log(values)
 
 
     }

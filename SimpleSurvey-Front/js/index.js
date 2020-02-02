@@ -11,7 +11,8 @@ const li = document.createElement('li')
 const div = document.createElement('div')
 
 // fetch to populate survey mosaic
-document.addEventListener('DOMContentLoaded', () => {
+function getCards(){
+    mosaic.innerHTML = ''
     fetch(SURVEY_URL)
         .then(resp => resp.json())
         .then(surveys => {
@@ -22,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <h5 class="card-title">${survey['attributes']['name']}</h5>
                     <p class="card-text survey_description">${survey['attributes']['description']}</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#takeSurvey" onclick="Survey.populate(${survey.id})"> Take Survey </button>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#surveyResults" onclick="Survey.results(${survey.id})"> See Results </button>
                     <br /><br />
@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `
             }
         })
-})
-
+}
+getCards()
 // add/delete question fields to form
 function addQuestionField() {
     questions.innerHTML += `
@@ -48,9 +48,6 @@ function addQuestionField() {
         <button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
     </div>
     `
-    // <label for="psw"><b>description</b></label>
-    // <input type="password" placeholder="Enter Password" name="psw" required>
-    // <br />
     console.log('clicked!')
 }
 
@@ -105,7 +102,11 @@ document.querySelector('.submit-question').addEventListener(
         });
         const survey = new Survey(surveyTitle, allQuestions, surveyDescription)
         survey.sendRequest()
-        console.log(survey)
+        document.querySelector('#SurveyName').value = ''
+        document.querySelector('.description').value = ''
+        for (i in questionsArray){
+            removeQuestionField(i)
+        }
     }
 )
 
