@@ -36,11 +36,22 @@ function getCards(){
 }
 getCards()
 // add/delete question fields to form
+
+// -> Attempting to keep values as you add more questions.
+// const isValue = (num) => {
+//     if (!!document.querySelectorAll('.questionName')[num - 1]){
+//         //debugger
+//         return document.querySelectorAll('.questionName')[num - 1].value
+//     } else {
+//         return ""
+//     }
+// }
+
 function addQuestionField() {
     questions.innerHTML += `
     <div class="form-group" id="${questions.children.length}"><br />
         <label for="question">Question Name</label>
-        <input type="text" class="form-control questionName"></input>
+        <input type="text" class="form-control questionName" ></input>
         <label for="questionType">Question Type</label><br>
         <button type="button" class="btn btn-secondary" onclick="addMultipleChoiceValues(${questions.children.length})"> Multiple Choice </button>
         <button type="button" class="btn btn-secondary" onclick="addTrueFalseValues(${questions.children.length})"> True or False </button>
@@ -48,8 +59,8 @@ function addQuestionField() {
         <button type="button" class="btn btn-secondary" onclick="removeQuestionField(${questions.children.length})"> remove question </button>
     </div>
     `
-    console.log('clicked!')
 }
+
 
 function questionElementReplace(questionElement, replacedElement, questionType) {
     let keepValue = questionElement.querySelector('.questionName').value
