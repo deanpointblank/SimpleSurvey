@@ -121,4 +121,32 @@ document.querySelector('.submit-question').addEventListener(
     }
 )
 
-// Submit Results
+// Sort surveys
+
+function sortSurvey(){
+    // grab each survey div
+    // sort by name
+    // place back in to dom
+    // let cards = document.querySelectorAll('.card')
+    let cardArray = []
+    document.querySelectorAll('.card').forEach((card)=> {cardArray.push(card)})
+    mosaic.innerHTML = ""
+    cardArray.sort((a, b) => {
+        if(a.querySelector('.card-title').innerHTML < b.querySelector('.card-title').innerHTML) {return -1;}
+        if(a.querySelector('.card-title').innerHTML > b.querySelector('.card-title').innerHTML) {return 1;}
+        return 0;
+    })
+    for (card of cardArray){
+        debugger
+        mosaic.innerHTML += card.outerHTML
+    }
+     //sort into into new array
+     // loop through each item and place in dom
+     //card-title
+
+}
+// users.sort(function(a, b){
+//     if(a.firstname < b.firstname) { return -1; }
+//     if(a.firstname > b.firstname) { return 1; }
+//     return 0;
+// })
