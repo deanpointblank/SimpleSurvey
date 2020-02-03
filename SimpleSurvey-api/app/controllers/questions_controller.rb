@@ -23,16 +23,17 @@ class QuestionsController < ApplicationController
 
     def update
         questions = Question.all
-        params[:results].gsub(/,{/,'~|~{')
-        .split('~|~').each do |question_answer|
-            qv = JSON.parse(question_answer.gsub(/[\[\]]/, ''))
-            question = Question.find_by(id: qv.keys[0].to_i)
-            if !!question.results
-                results = question.results + ', ' + qv.values[0]
-            else
-                results = qv.values[0]
+        params[:results].gsub(/,{/,'~|~{').split('~|~').each do |question_answer|
+            if !question_answer.include?("{}")
+                qv = JSON.parse(question_answer.gsub(/[\[\]]/, ''))
+                question = Question.find_by(id: qv.keys[0].to_i)
+                if !!question.results
+                    results = question.results + ', ' + qv.values[0]
+                else
+                    results = qv.values[0]
+                end
+                question.update(results: results)
             end
-            question.update(results: results)
         end
         render json: QuestionSerializer.new(questions)
     end

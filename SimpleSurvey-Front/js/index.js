@@ -131,22 +131,16 @@ function sortSurvey(){
     let cardArray = []
     document.querySelectorAll('.card').forEach((card)=> {cardArray.push(card)})
     mosaic.innerHTML = ""
+    //sort into into new array
+    // loop through each item and place in dom
+    //card-title
     cardArray.sort((a, b) => {
         if(a.querySelector('.card-title').innerHTML < b.querySelector('.card-title').innerHTML) {return -1;}
         if(a.querySelector('.card-title').innerHTML > b.querySelector('.card-title').innerHTML) {return 1;}
         return 0;
     })
     for (card of cardArray){
-        debugger
         mosaic.innerHTML += card.outerHTML
     }
-     //sort into into new array
-     // loop through each item and place in dom
-     //card-title
 
 }
-// users.sort(function(a, b){
-//     if(a.firstname < b.firstname) { return -1; }
-//     if(a.firstname > b.firstname) { return 1; }
-//     return 0;
-// })

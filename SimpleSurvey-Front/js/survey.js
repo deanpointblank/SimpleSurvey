@@ -188,10 +188,11 @@ class Survey {
         for (const question of allQuestions){
             const questionName = question.getAttribute('id')
             let questionValue
+
             switch (question.className.split(" ")[1]){             
                 case "true_false":
                     for (const value of question.querySelectorAll('.form-check-input')){
-                        if (value.checked){
+                        if (!!value.checked){
                             questionValue = value.value
                         }
                     }
@@ -251,45 +252,46 @@ class Survey {
     static parseResults(data){
         let questionData = data.attributes.questions
         for(const question of questionData){
-            const kv = {}
-            for (let ii of question.results.split(',')){
-                ii = ii.trim()
-                if(!!kv[ii]){
-                    kv[ii] += 1
-                } else {
-                    kv[ii] = 1
-                }
-            }
-            
-            const chart = document.createElement('canvas')
-            chart.setAttribute("id", `${question.id}`)
-            chart.getContext('2d')
-            document.getElementById('charts').appendChild(chart)
-
-            let pieChart = new Chart(chart, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(kv),
-                    datasets:[{
-                        label: question.name ,
-                        data: Object.values(kv),
-                        backgroundColor: ['red', 'orange', 'pink', 'black'],
-                        hoverBorderWidth: 5,
-                        hoverBorderColor: 'red'
-                    }],
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: question.name,
-                        fontSize: 25
-                    },
-                    legend:{
-                        position: 'bottom'
+            if(!!question.results){
+                const kv = {}
+                for (let ii of question.results.split(',')){
+                    ii = ii.trim()
+                    if(!!kv[ii]){
+                        kv[ii] += 1
+                    } else {
+                        kv[ii] = 1
                     }
                 }
-            })
+                
+                const chart = document.createElement('canvas')
+                chart.setAttribute("id", `${question.id}`)
+                chart.getContext('2d')
+                document.getElementById('charts').appendChild(chart)
 
+                let pieChart = new Chart(chart, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(kv),
+                        datasets:[{
+                            label: question.name ,
+                            data: Object.values(kv),
+                            backgroundColor: ['red', 'orange', 'pink', 'black'],
+                            hoverBorderWidth: 5,
+                            hoverBorderColor: 'red'
+                        }],
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: question.name,
+                            fontSize: 25
+                        },
+                        legend:{
+                            position: 'bottom'
+                        }
+                    }
+                })
+            }
 
 
         }
